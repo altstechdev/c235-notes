@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C235 IT Security Study Notes</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(to bottom right, #f3f4f6, #dbeafe);
+            color: #1f2937;
+            line-height: 1.6;
+        }
+        
+        .header {
+            background: linear-gradient(to right, #2563eb, #4f46e5);
+            color: white;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .header p {
+            color: #bfdbfe;
+        }
+        
+        .tabs {
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .tabs-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            padding: 1rem;
+        }
+        
+        .tab-btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            background: #e5e7eb;
+            color: #374151;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 0.5rem;
+            transition: all 0.2s;
+        }
+        
+        .tab-btn:hover {
+            background: #d1d5db;
+        }
+        
+        .tab-btn.active {
+            background: #2563eb;
+            color: white;
+        }
+        
+        .content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .section {
+            background: white;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .section h2 {
+            color: #1f2937;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            border-bottom: 3px solid #2563eb;
+            padding-bottom: 0.5rem;
+        }
+        
+        .section h3 {
+            color: #2563eb;
+            font-size: 1.5rem;
+            margin: 1.5rem 0 1rem;
+        }
+        
+        .section h4 {
+            font-size: 1.1rem;
+            margin: 1rem 0 0.5rem;
+            color: #374151;
+        }
+        
+        .grid {
+            display: grid;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .grid-2 {
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        }
+        
+        .grid-3 {
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        }
+        
+        .card {
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            border-left: 4px solid;
+        }
+        
+        .card-red {
+            background: #fef2f2;
+            border-color: #ef4444;
+        }
+        
+        .card-green {
+            background: #f0fdf4;
+            border-color: #22c55e;
+        }
+        
+        .card-blue {
+            background: #eff6ff;
+            border-color: #3b82f6;
+        }
+        
+        .card-yellow {
+            background: #fefce8;
+            border-color: #eab308;
+        }
+        
+        .card-purple {
+            background: #faf5ff;
+            border-color: #a855f7;
+        }
+        
+        .card-orange {
+            background: #fff7ed;
+            border-color: #f97316;
+        }
+        
+        .card h4 {
+            margin-top: 0;
+            font-weight: bold;
+        }
+        
+        .term-box {
+            background: #eff6ff;
+            border-left: 4px solid #3b82f6;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0.25rem;
+        }
+        
+        .term-box strong {
+            color: #1e40af;
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+        
+        .example-box {
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin: 1rem 0;
+            border-left: 4px solid;
+        }
+        
+        .example-info {
+            background: #eff6ff;
+            border-color: #3b82f6;
+        }
+        
+        .example-warning {
+            background: #fef3c7;
+            border-color: #f59e0b;
+        }
+        
+        .example-danger {
+            background: #fee2e2;
+            border-color: #ef4444;
+        }
+        
+        .example-success {
+            background: #d1fae5;
+            border-color: #10b981;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        
+        th, td {
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            text-align: left;
+        }
+        
+        th {
+            background: #f3f4f6;
+            font-weight: 600;
+            color: #374151;
+        }
+        
+        tr:nth-child(even) {
+            background: #f9fafb;
+        }
+        
+        ul, ol {
+            margin: 1rem 0;
+            padding-left: 2rem;
+        }
+        
+        li {
+            margin: 0.5rem 0;
+        }
+        
+        .formula {
+            background: linear-gradient(to right, #fef3c7, #fecaca);
+            padding: 1.5rem;
+            text-align: center;
+            border-radius: 0.5rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 1rem 0;
+        }
+        
+        .footer {
+            background: linear-gradient(to right, #1f2937, #111827);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 3rem;
+        }
+        
+        @media print {
+            .tabs, .header {
+                display: none;
+            }
+            .tab-content {
+                display: block !important;
+                page-break-after: always;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <h1>🛡️ C235 IT Security & Management</h1>
+            <p>Complete Study Notes & Terminology Guide</p>
+            <p style="margin-top: 1rem; font-size: 0.9rem;">📚 Republic Polytechnic | AY2025 Semester 2</p>
+        </div>
+    </div>
+
+    <div class="tabs">
+        <div class="tabs-container">
+            <button class="tab-btn active" onclick="showTab('fundamentals')">🛡️ Fundamentals</button>
+            <button class="tab-btn" onclick="showTab('risk')">⚠️ Risk Analysis</button>
+            <button class="tab-btn" onclick="showTab('access')">🔒 Access Control</button>
+            <button class="tab-btn" onclick="showTab('malware')">🦠 Malware</button>
+            <button class="tab-btn" onclick="showTab('social')">👥 Social Engineering</button>
+        </div>
+    </div>
+
+    <div class="content">
+        <!-- FUNDAMENTALS TAB -->
+        <div id="fundamentals" class="tab-content active">
+            <div class="section">
+                <h2>IT Security Fundamentals</h2>
+                
+                <h3>What is IT Security?</h3>
+                <div class="term-box">
+                    <strong>IT Security</strong>
+                    The practice of protecting information-related assets consisting of information, data, and technologies. It's about keeping these critical organizational assets safe from unauthorized access, modification, or destruction.
+                </div>
+                
+                <div class="term-box">
+                    <strong>Security</strong>
+                    The act of protecting and keeping assets safe.
+                </div>
+                
+                <div class="term-box">
+                    <strong>Assets</strong>
+                    Items belonging to an organization that are considered valuable (hardware, software, data, people).
+                </div>
+
+                <h3>The CIA Model</h3>
+                <p>The CIA Model emphasizes three critical attributes that must co-exist to ensure data security.</p>
+                
+                <div class="grid grid-3">
+                    <div class="card card-red">
+                        <h4>👁️ Confidentiality</h4>
+                        <p>Preventing unauthorized disclosure of information. Limiting disclosure to authorized recipients only.</p>
+                        <p style="font-size: 0.9rem; margin-top: 0.5rem; font-style: italic;">"Allow what needs to be known to be seen/used only by those who need to know"</p>
+                    </div>
+                    <div class="card card-green">
+                        <h4>✓ Integrity</h4>
+                        <p>Protecting data from unauthorized modification or deletion. Ensuring erroneous changes can be undone.</p>
+                        <p style="font-size: 0.9rem; margin-top: 0.5rem; font-style: italic;">Only authorized parties can view, add, modify, and delete information</p>
+                    </div>
+                    <div class="card card-blue">
+                        <h4>🌐 Availability</h4>
+                        <p>Systems, networks, and authentication must work properly. Information must be available when needed.</p>
+                        <p style="font-size: 0.9rem; margin-top: 0.5rem; font-style: italic;">Prevent denial of service attacks and website defacements</p>
+                    </div>
+                </div>
+
+                <h4>CIA Model Examples</h4>
+                <table>
+                    <tr>
+                        <th>Description</th>
+                        <th>Attribute Affected</th>
+                    </tr>
+                    <tr>
+                        <td>CEO's emails deleted from mailbox - no longer accessible</td>
+                        <td>Availability</td>
+                    </tr>
+                    <tr>
+                        <td>Unable to access photo album on Google Drive</td>
+                        <td>Availability</td>
+                    </tr>
+                    <tr>
+                        <td>Prototype design sold to competitor</td>
+                        <td>Confidentiality</td>
+                    </tr>
+                    <tr>
+                        <td>Source code edited causing program errors</td>
+                        <td>Integrity</td>
+                    </tr>
+                    <tr>
+                        <td>Power outage causing servers out of service</td>
+                        <td>Availability</td>
+                    </tr>
+                </table>
+
+                <h3>Beyond CIA</h3>
+                <div class="grid grid-2">
+                    <div class="term-box">
+                        <strong>Authentication</strong>
+                        Uniquely identifying individuals to provide assurance of a user's identity. Ensures a person is who they claim to be.
+                    </div>
+                    <div class="term-box">
+                        <strong>Non-Repudiation / Accountability</strong>
+                        Ensuring relevant parties can be held accountable and cannot deny an action.
+                        <br><em>Example: Customer makes an order but cannot deny making it</em>
+                    </div>
+                </div>
+
+                <h3>Data-Information-Knowledge Hierarchy</h3>
+                <div class="grid grid-3">
+                    <div class="card card-blue">
+                        <h4>📊 Data</h4>
+                        <p>Individual raw facts and figures</p>
+                        <p style="font-size: 0.9rem; margin-top: 0.5rem; font-style: italic;">Example: Email address xyz@gmail.com - not very useful by itself</p>
+                    </div>
+                    <div class="card card-green">
+                        <h4>ℹ️ Information</h4>
+                        <p>Composition of different data put in context, meaningful to the receiver</p>
+                        <p style="font-size: 0.9rem; margin-top: 0.5rem; font-style: italic;">Example: Complete student record (ID, name, age, email, GPA)</p>
+                    </div>
+                    <div class="card card-purple">
+                        <h4>🧠 Knowledge</h4>
+                        <p>Capability of understanding relationships and doing something useful</p>
+                        <p style="font-size: 0.9rem; margin-top: 0.5rem; font-style: italic;">Example: Using course content to answer exams</p>
+                    </div>
+                </div>
+
+                <h3>Data Privacy vs Data Protection</h3>
+                <div class="grid grid-2">
+                    <div class="card card-green">
+                        <h4>Data Privacy</h4>
+                        <p><strong>WHO</strong> can access what data</p>
+                        <p>Defines who has access to data and what constitutes sensitive or critical data</p>
+                    </div>
+                    <div class="card card-blue">
+                        <h4>Data Protection</h4>
+                        <p><strong>HOW</strong> to protect (tools/methodologies)</p>
+                        <p>Provides tools and policies to restrict access to data</p>
+                    </div>
+                </div>
+                <div class="example-box example-info">
+                    <strong>Key Point:</strong> Users decide privacy, companies ensure protection. They work hand-in-hand to secure data.
+                </div>
+
+                <h3>PDPA & PDPC (Singapore)</h3>
+                <div class="term-box">
+                    <strong>PDPC (Personal Data Protection Commission)</strong>
+                    Singapore's regulatory authority responsible for administering and enforcing the Personal Data Protection Act (PDPA). Represents Singapore internationally on data protection issues.
+                </div>
+                
+                <div class="term-box">
+                    <strong>PDPA (Personal Data Protection Act)</strong>
+                    Provides baseline standard of protection for personal data in Singapore. Governs collection, use, disclosure, and care of personal data. Contains 11 Data Protection Obligations.
+                </div>
+
+                <h4>Data Breach Notification (DBN) Obligation</h4>
+                <div class="example-box example-warning">
+                    <strong>Criteria for Mandatory Notification:</strong>
+                    <ul>
+                        <li><strong>Significant Harm</strong> to affected individuals</li>
+                        <li><strong>Significant Scale:</strong> Involves personal data of 500+ individuals</li>
+                    </ul>
+                    <strong>Timelines:</strong>
+                    <ul>
+                        <li><strong>30 days</strong> to determine if breach is notifiable</li>
+                        <li><strong>Within 3 days</strong> once determined notifiable</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- RISK ANALYSIS TAB -->
+        <div id="risk" class="tab-content">
+            <div class="section">
+                <h2>Risk Analysis</h2>
+                
+                <h3>Key Definitions</h3>
+                <div class="term-box">
+                    <strong>Risk</strong>
+                    The combination of the probability of an event and its consequence.
+                </div>
+                
+                <div class="term-box">
+                    <strong>Risk Assessment/Analysis</strong>
+                    The process by which risks are identified and the impact of those risks determined.
+                </div>
+                
+                <div class="term-box">
+                    <strong>Risk Management</strong>
+                    The process of determining: acceptable risk levels, current risk level, actions to reduce risk, and maintaining risk level.
+                </div>
+
+                <h3>Key Elements of Risk</h3>
+                <div class="grid grid-3">
+                    <div class="card card-blue">
+                        <h4>Assets</h4>
+                        <p>Anything of value to an organization</p>
+                        <p><strong>Tangible:</strong> Hardware, software, furniture, people</p>
+                        <p><strong>Intangible:</strong> Reputation, goodwill</p>
+                    </div>
+                    <div class="card card-yellow">
+                        <h4>Vulnerabilities</h4>
+                        <p>A weakness or absence of safeguard</p>
+                        <p><strong>Examples:</strong> No security, OS not updated, poor locks</p>
+                    </div>
+                    <div class="card card-red">
+                        <h4>Threats</h4>
+                        <p>Something/someone that can exploit vulnerability</p>
+                        <p><strong>Examples:</strong> Hackers, fire, malware, natural disasters</p>
+                    </div>
+                </div>
+
+                <h3>Qualitative Risk Analysis</h3>
+                <div class="formula">
+                    Relative Risk = Asset Value × Vulnerability × Threat
+                </div>
+                
+                <h4>Steps:</h4>
+                <ol>
+                    <li>Identify Assets</li>
+                    <li>Assign Relative Asset Values</li>
+                    <li>Identify Vulnerabilities</li>
+                    <li>Rate Vulnerabilities</li>
+                    <li>Identify Threats</li>
+                    <li>Rate Threats</li>
+                </ol>
+                <div class="example-box example-info">
+                    <strong>Rating Scale:</strong> Use 1 (Lowest) to 5 (Highest) for all ratings
+                </div>
+
+                <h3>Quantitative Risk Analysis</h3>
+                <div class="term-box">
+                    <strong>Asset Value (AV)</strong>
+                    The value of the asset to the organization
+                    <br><em>Example: Company laptop = $1,000</em>
+                </div>
+                
+                <div class="term-box">
+                    <strong>Exposure Factor (EF)</strong>
+                    Percentage of value lost due to an incident. Losing 40% = 0.4; Losing entire asset = 1.0
+                </div>
+                
+                <div class="term-box">
+                    <strong>Single Loss Expectancy (SLE)</strong>
+                    Monetary loss if a single event occurs. Formula: <strong>SLE = AV × EF</strong>
+                    <br><em>Example: $1,000 × 1 = $1,000</em>
+                </div>
+                
+                <div class="term-box">
+                    <strong>Annualized Rate of Occurrence (ARO)</strong>
+                    How likely/often the event occurs in a year
+                    <br><em>Example: 7 laptops lost/stolen in a year</em>
+                </div>
+                
+                <div class="term-box">
+                    <strong>Annual Loss Expectancy (ALE)</strong>
+                    Formula: <strong>ALE = ARO × SLE</strong>
+                    <br><em>Example: 7 × $1,000 = $7,000</em>
+                </div>
+
+                <h3>Risk Management Strategies</h3>
+                <div class="grid grid-2">
+                    <div class="card card-blue">
+                        <h4>1. Risk Mitigation</h4>
+                        <p>Systematic approach to reduce exposure or likelihood</p>
+                        <p style="font-size: 0.9rem; font-style: italic;">Example: Implement wireless security</p>
+                    </div>
+                    <div class="card card-green">
+                        <h4>2. Risk Acceptance</h4>
+                        <p>Willing to accept loss when risk occurs</p>
+                        <p style="font-size: 0.9rem; font-style: italic;">Example: Bank reimburses fraud</p>
+                    </div>
+                    <div class="card card-yellow">
+                        <h4>3. Risk Avoidance</h4>
+                        <p>Not involving in activities that carry risk</p>
+                        <p style="font-size: 0.9rem; font-style: italic;">Example: Don't host online</p>
+                    </div>
+                    <div class="card card-purple">
+                        <h4>4. Risk Transference</h4>
+                        <p>Sharing/transferring risk to another party</p>
+                        <p style="font-size: 0.9rem; font-style: italic;">Example: Outsource hosting</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ACCESS CONTROL TAB -->
+        <div id="access" class="tab-content">
+            <div class="section">
+                <h2>Access Control Models</h2>
+                
+                <h3>Authentication vs Authorization</h3>
+                <div class="grid grid-2">
+                    <div class="card card-blue">
+                        <h4>Authentication</h4>
+                        <p>Process of establishing one's identity to the system</p>
+                        <p style="font-size: 0.9rem; font-style: italic;">Example: Login with username and password</p>
+                    </div>
+                    <div class="card card-green">
+                        <h4>Authorization</h4>
+                        <p>Permission to access resources</p>
+                        <p style="font-size: 0.9rem; font-style: italic;">Example: User can open folder she owns but not others'</p>
+                    </div>
+                </div>
+
+                <h3>Three Main Access Control Models</h3>
+                
+                <div class="card card-blue" style="margin: 1rem 0;">
+                    <h4>RBAC - Role Based Access Control</h4>
+                    <p>Permissions assigned to roles, users assigned to roles. Access based on job function/role, not individual identity.</p>
+                    <p><strong>Example:</strong> Forum Moderator can edit posts, ban users; Regular Users can only edit own posts</p>
+                </div>
+                
+                <div class="card card-green" style="margin: 1rem 0;">
+                    <h4>DAC - Discretionary Access Control</h4>
+                    <p>Users control access to their own objects. It's all about <strong>ownership</strong>.</p>
+                    <p><strong>Key Concept:</strong> If you create an object, you become its owner with full control.</p>
+                    <p><strong>Common Usage:</strong> Windows, Linux, Mac OSX</p>
+                </div>
+                
+                <div class="card card-red" style="margin: 1rem 0;">
+                    <h4>MAC - Mandatory Access Control</h4>
+                    <p>Strictest control. Admin/policies control all access. Users cannot change access even if they created the resource.</p>
+                    <p><strong>Common Usage:</strong> Military, banks, high security environments</p>
+                </div>
+
+                <h3>Comparison of Access Control Models</h3>
+                <table>
+                    <tr>
+                        <th>Aspect</th>
+                        <th>MAC</th>
+                        <th>DAC</th>
+                        <th>RBAC</th>
+                    </tr>
+                    <tr>
+                        <td>Access Based On</td>
+                        <td>Security level & clearance</td>
+                        <td>User identity/group</td>
+                        <td>User role/job function</td>
+                    </tr>
+                    <tr>
+                        <td>Management</td>
+                        <td>Centrally by Admin</td>
+                        <td>By Object owners</td>
+                        <td>Role assignments by Admin</td>
+                    </tr>
+                    <tr>
+                        <td>Flexibility</td>
+                        <td>Least flexible</td>
+                        <td>Most flexible</td>
+                        <td>Moderate</td>
+                    </tr>
+                    <tr>
+                        <td>Popular Use</td>
+                        <td>Military, banks</td>
+                        <td>Windows, Linux, Mac</td>
+                        <td>DBMS, Applications</td>
+                    </tr>
+                </table>
+
+                <h3>AAA Framework</h3>
+                <p>Authentication, Authorization, and Accounting - Framework for controlling access to resources</p>
+                
+                <div class="grid grid-3">
+                    <div class="card card-blue">
+                        <h4>1. Authentication</h4>
+                        <p>Method of identifying a user. User enters credentials, AAA server validates against database.</p>
+                    </div>
+                    <div class="card card-green">
+                        <h4>2. Authorization</h4>
+                        <p>Determines what user can do after authentication. Enforces policies on permitted activities.</p>
+                    </div>
+                    <div class="card card-purple">
+                        <h4>3. Accounting</h4>
+                        <p>Monitors resources consumed. Used for billing, trend analysis, capacity planning.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MALWARE TAB -->
+        <div id="malware" class="tab-content">
+            <div class="section">
+                <h2>Malware (Malicious Software)</h2>
+                
+                <div class="term-box">
+                    <strong>Malware</strong>
+                    Unwanted software running on a user's computer that performs malicious actions. Often exploits weaknesses or bugs in the target machine.
+                </div>
+
+                <h3>Types of Malware</h3>
+                <div class="grid grid-2">
+                    <div class="card card-red">
+                        <h4>🦠 Virus</h4>
+                        <p>Malicious code that replicates by attaching to other executable code</p>
+                        <p><strong>Types:</strong> Boot Sector, Program, Macro</p>
+                    </div>
+                    <div class="card card-orange">
+                        <h4>🐛 Worm</h4>
+                        <p>Standalone program that replicates independently</p>
+                        <p><strong>Key:</strong> Spreads faster than virus - doesn't need to attach</p>
+                    </div>
+                    <div class="card card-purple">
+                        <h4>🎭 Trojan</h4>
+                        <p>Program that appears useful but contains malicious code</p>
+                        <p><strong>Key:</strong> Requires human interaction to execute</p>
+                    </div>
+                    <div class="card card-blue">
+                        <h4>👻 Rootkit</h4>
+                        <p>Modifies OS to avoid detection and gain escalated privileges</p>
+                        <p><strong>Key:</strong> Hardest to detect - hides itself</p>
+                    </div>
+                    <div class="card card-yellow">
+                        <h4>🕵️ Spyware</h4>
+                        <p>Spies on users, recording activities</p>
+                        <p><strong>Monitors:</strong> Online activities, search habits</p>
+                    </div>
+                    <div class="card card-green">
+                        <h4>📢 Adware</h4>
+                        <p>Presents unwanted advertisements</p>
+                        <p><strong>Forms:</strong> Pop-ups, unclosable windows</p>
+                    </div>
+                    <div class="card card-red">
+                        <h4>🧟 Botnet</h4>
+                        <p>Network of infected computers (zombies) controlled remotely</p>
+                        <p><strong>Used for:</strong> Spam, DDoS attacks</p>
+                    </div>
+                    <div class="card card-orange">
+                        <h4>😱 Scareware</h4>
+                        <p>Poses as legitimate software, tricks users</p>
+                        <p><strong>Tactics:</strong> Shock, anxiety, fake threats</p>
+                    </div>
+                    <div class="card card-purple">
+                        <h4>💣 Logic Bomb</h4>
+                        <p>Remains dormant until event invokes payload</p>
+                        <p><strong>Trigger:</strong> Date, action, or condition</p>
+                    </div>
+                    <div class="card card-red">
+                        <h4>🔒 Ransomware</h4>
+                        <p>Restricts access, demands ransom for removal</p>
+                        <p><strong>Payment:</strong> Usually cryptocurrency</p>
+                    </div>
+                </div>
+
+                <h3>Malware Protection</h3>
+                <div class="grid grid-2">
+                    <div class="card card-blue">
+                        <h4>Anti-Virus Software</h4>
+                        <p><strong>Signature-based:</strong> Compares against virus dictionary</p>
+                        <p><strong>Heuristic:</strong> Examines behavior to detect suspicious activity</p>
+                    </div>
+                    <div class="card card-green">
+                        <h4>Personal Firewall</h4>
+                        <p>Monitors and controls traffic into/out of system</p>
+                    </div>
+                    <div class="card card-purple">
+                        <h4>Windows Defender</h4>
+                        <p>Protects from spyware, real-time protection, scheduled scanning</p>
+                    </div>
+                    <div class="card card-yellow">
+                        <h4>Anti-Spam Software</h4>
+                        <p>Filters junk emails at corporate or host level</p>
+                    </div>
+                </div>
+
+                <h3>Malware Prevention</h3>
+                <ul>
+                    <li><strong>Education:</strong> Be careful installing software, download from reliable sources only</li>
+                    <li><strong>Disable Autorun:</strong> For removable media to prevent automatic execution</li>
+                    <li><strong>Security Software:</strong> Personal firewall, updated anti-virus</li>
+                    <li><strong>OS Updates:</strong> Get latest bug fixes to patch exploitable vulnerabilities</li>
+                    <li><strong>Application Updates:</strong> Update separately from OS to fix application vulnerabilities</li>
+                    <li><strong>IT Advisories:</strong> Stay informed about new threats</li>
+                </ul>
+
+                <h3>Ransomware Trends</h3>
+                <div class="example-box example-danger">
+                    <strong>📊 Key Statistics:</strong>
+                    <ul>
+                        <li>Ransomware remains the most prominent malware threat</li>
+                        <li>236.1 million ransomware attacks in first half of 2022</li>
+                        <li>51% of companies faced ransomware attacks</li>
+                        <li>26% of companies paid the ransom</li>
+                        <li>Average ransom: $180,000 for big companies, $6,000 for small businesses</li>
+                    </ul>
+                </div>
+
+                <div class="example-box example-warning">
+                    <strong>Case Study: Colonial Pipeline (May 2021)</strong>
+                    <p>Largest compromise of US critical infrastructure. DarkSide cybercriminal group attacked Colonial Pipeline (responsible for nearly half of oil & gas for Eastern US). Company paid 75 bitcoins ($4.4 million) ransom. Later, Department of Justice recovered 63.7 bitcoins ($2.3 million).</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SOCIAL ENGINEERING TAB -->
+        <div id="social" class="tab-content">
+            <div class="section">
+                <h2>Social Engineering</h2>
+                
+                <div class="term-box">
+                    <strong>Social Engineering</strong>
+                    The use of influence and persuasion to deceive people for the purpose of obtaining information or persuading the victim to perform some action for the hacker.
+                </div>
+
+                <div class="example-box example-danger">
+                    <strong>⚠️ Important:</strong> Social Engineering is an ILLEGAL act. You can be charged in court and may face jail term in some countries.
+                </div>
+
+                <h3>Social Engineering Techniques</h3>
+                <div class="grid grid-2">
+                    <div class="card card-blue">
+                        <h4>🎭 Pretexting</h4>
+                        <p>Creating and using an invented scenario to engage victim. Involves prior research or setup.</p>
+                    </div>
+                    <div class="card card-red">
+                        <h4>🆔 Identity Theft</h4>
+                        <p>Fraud using another person's identity to access resources or obtain credit.</p>
+                    </div>
+                    <div class="card card-purple">
+                        <h4>🎣 Phishing</h4>
+                        <p>Obtaining sensitive information by masquerading as trusted entity in email sent to large group.</p>
+                    </div>
+                    <div class="card card-orange">
+                        <h4>🎯 Spear Phishing</h4>
+                        <p>Targeting specific groups with something in common. More successful than random phishing.</p>
+                    </div>
+                    <div class="card card-green">
+                        <h4>📞 Vishing</h4>
+                        <p>Variation of phishing using voice communications. Takes advantage of trust in telephone network.</p>
+                    </div>
+                    <div class="card card-yellow">
+                        <h4>🚪 Tailgating</h4>
+                        <p>Unauthorized person follows someone to restricted area without consent.</p>
+                    </div>
+                    <div class="card card-blue">
+                        <h4>🗑️ Dumpster Diving</h4>
+                        <p>Gathering information through careless disposal of documents or data storage devices.</p>
+                    </div>
+                    <div class="card card-purple">
+                        <h4>👀 Shoulder Surfing</h4>
+                        <p>Looking over someone's shoulder while doing something confidential.</p>
+                    </div>
+                    <div class="card card-red">
+                        <h4>🎭 Impersonation</h4>
+                        <p>Playing role of someone you're likely to trust. Occurs in person.</p>
+                    </div>
+                    <div class="card card-green">
+                        <h4>🪤 Baiting</h4>
+                        <p>Laying a trap for victims, counting on curiosity or greed (e.g., infected USB drive).</p>
+                    </div>
+                </div>
+
+                <h3>Human Weaknesses Exploited</h3>
+                <div class="grid grid-3">
+                    <div class="card card-red"><p><strong>Carelessness</strong></p></div>
+                    <div class="card card-orange"><p><strong>Fear</strong></p></div>
+                    <div class="card card-yellow"><p><strong>Lack of Awareness</strong></p></div>
+                    <div class="card card-green"><p><strong>Gullibility</strong></p></div>
+                    <div class="card card-blue"><p><strong>Trusting Nature</strong></p></div>
+                    <div class="card card-purple"><p><strong>Eagerness to Help</strong></p></div>
+                </div>
+
+                <h3>Counter-Measures</h3>
+                <div class="example-box example-warning">
+                    <strong>Reality Check:</strong> No measures can fully protect from Social Engineering attacks. The human factor cannot be eliminated totally.
+                </div>
+
+                <h4>Protection by Controls:</h4>
+                <div class="grid grid-2">
+                    <div class="card card-blue">
+                        <h4>Security Policy</h4>
+                        <p>Clear policies defining acceptable behavior and security procedures</p>
+                    </div>
+                    <div class="card card-green">
+                        <h4>Physical Security</h4>
+                        <p>Access controls, visitor management, secure disposal</p>
+                    </div>
+                    <div class="card card-purple">
+                        <h4>Education & Awareness</h4>
+                        <p>Regular training on recognizing attacks</p>
+                    </div>
+                    <div class="card card-yellow">
+                        <h4>IT Security Infrastructure</h4>
+                        <p>Technical controls to support policies</p>
+                    </div>
+                </div>
+
+                <h4>Examples of Counter-Measures:</h4>
+                <ul>
+                    <li>Activate screen savers or lock screen when away</li>
+                    <li>Don't write passwords on papers</li>
+                    <li>Shred confidential papers instead of throwing in dustbin</li>
+                    <li>Don't stick passwords around workstation</li>
+                    <li>Visitors must report at counter and exchange for visitor pass</li>
+                    <li>Don't allow visitors to wander by themselves</li>
+                    <li>Verify visitors' information</li>
+                    <li>Don't disclose information through phones or emails</li>
+                    <li>Verify email information and don't click suspicious links</li>
+                </ul>
+
+                <h3>Social Engineering Trends & Statistics</h3>
+                <div class="example-box example-danger">
+                    <strong>📊 Key Statistics:</strong>
+                    <ul>
+                        <li><strong>98%</strong> of cyber-attacks relied on social engineering</li>
+                        <li><strong>43%</strong> of IT professionals targeted by social engineering schemes</li>
+                        <li><strong>60%</strong> of new employees at high risk</li>
+                        <li><strong>30%</strong> of phishing messages get opened by targeted users</li>
+                        <li><strong>12%</strong> of those users click malicious attachments/links</li>
+                        <li>Business Email Compromise (BEC) scams cost organizations <strong>$676 million</strong> in 2017</li>
+                    </ul>
+                </div>
+
+                <div class="example-box example-info">
+                    <strong>Notable Case: RSA Security (2011)</strong>
+                    <p>RSA Security fell prey to phishing attack that compromised SecurID systems, costing $66 million. Attack was 3-stage:</p>
+                    <ol>
+                        <li>Phishing email with subject "2011 Recruitment Plan" containing malicious Excel file</li>
+                        <li>Installing backdoor and stealing passwords</li>
+                        <li>Exfiltrating data to external servers</li>
+                    </ol>
+                    <p><strong>Lesson:</strong> Even security companies are vulnerable to simple social engineering!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <h3 style="margin-bottom: 1rem;">📚 End of C235 Study Notes</h3>
+        <p>You've covered all essential concepts for IT Security & Management!</p>
+        <p style="margin-top: 0.5rem; color: #93c5fd;">Good luck with your studies and exams! ✨</p>
+        <p style="margin-top: 1.5rem; font-size: 0.9rem; color: #9ca3af;">Republic Polytechnic | AY2025 Semester 2</p>
+    </div>
+
+    <script>
+        function showTab(tabName) {
+            // Hide all tab contents
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Remove active class from all buttons
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            tabButtons.forEach(button => {
+                button.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabName).classList.add('active');
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>
